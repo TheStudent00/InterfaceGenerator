@@ -1,0 +1,137 @@
+OTU GREEN LICENSE FOR UNIVERSAL WORKS
+(“OTU-GL v6” — Permissive license with Patent Grant, Ethical Conditions, and Anti-Abuse Terms)
+Version 6 — 2025-09-17
+
+Copyright (c) 2025 Student
+
+PURPOSE
+
+Grant broad rights to use the Work while denying those rights to entities and uses that harm vulnerable beings or the biosphere.
+
+DEFINITIONS
+
+“Work” means any protectable subject matter (e.g., works of authorship; software; text; artwork; images; audio/visual; research papers; datasets and databases; schematics; industrial designs; hardware descriptions; models; trained or untrained model parameters (“weights”); prompts; configuration files; and documentation) released under this License.
+
+“Contributor” means any rightsholder that publishes the Work or submits a Contribution.
+
+“Contribution” means any change, addition, or submission intentionally provided to the Work by a Contributor.
+
+“Entity” means any individual or legal person, including parents, subsidiaries, affiliates, agents, and contractors acting on its behalf.
+
+“Designated Harmful Regime (DHR)” means a state apparatus or occupying authority historically or currently responsible for genocide, crimes against humanity, or aggressive war, as recognized by authoritative international-law sources (e.g., Nuremberg Principles, Rome Statute) or tribunals; this explicitly includes the National Socialist regime in Germany (1933–1945). “Agent of a DHR” includes ministries, state-owned firms, and front organizations acting on behalf of a DHR.
+
+---
+
+1. COPYRIGHT, RELATED, DATABASE, AND DESIGN RIGHTS GRANT
+
+Subject to §§3–7, each Contributor grants any Entity that is not a Prohibited Entity a worldwide, non-exclusive, no-charge, royalty-free, perpetual, irrevocable (except as stated in §6) license under copyright and related rights (including sui generis database rights, mask-work rights, and unregistered/registered design rights where applicable) to use, reproduce, modify, adapt, merge, publish, perform, display, distribute, sublicense, and/or sell copies of the Work, and to permit others to do so.
+
+---
+
+2. PATENT LICENSE
+
+Subject to §§3–7, each Contributor also grants a worldwide, non-exclusive, no-charge, royalty-free, perpetual, irrevocable (except as stated in §6) patent license to make, have made, use, offer to sell, sell, import, and otherwise transfer the Work and Contributions, covering patent claims licensable by that Contributor that are necessarily infringed by their Contribution(s) alone or by combination with the Work.
+
+---
+
+3. NOTICE
+
+The copyright notice and this License must be included in all copies or substantial portions of the Work.
+
+---
+
+4. ETHICAL BOUNDARIES (SCOPE)
+
+The licenses in §§1–2 are granted only for uses that are not Prohibited Uses and only to Entities that are not Prohibited Entities.
+
+4.1 Prohibited Uses (non-exhaustive):
+
+(a) Development, operation, or maintenance of fossil-fuel extraction, production, or refining (coal, crude oil, tar/bitumen, natural gas). Personal consumer use of energy/fuel is not prohibited.
+
+(b) Design, deployment, or operation of systems intended for war crimes, crimes against humanity, or violations of Common Article 3 of the Geneva Conventions; targeted mass repression (e.g., mass surveillance to persecute protected groups); or incitement to genocide.
+
+(c) Weapons of mass destruction (nuclear, biological, chemical) or delivery systems primarily designed for such.
+
+(d) Deliberate large-scale environmental destruction, including activities reasonably expected to accelerate climate catastrophe (e.g., new thermal-coal developments) or accelerate eco-spheric destruction.
+
+(e) Training, tuning, or operating models to generate, facilitate, or direct any of the above.
+
+4.2 Prohibited Entities:
+
+(a) DHRs and their Agents.
+
+(b) Fossil-Fuel Industry Exclusion: Entities directly involved in the extraction, production, or refining of fossil fuels as a primary business (≥50% consolidated revenue). This exclusion does not apply to individual consumers purchasing fossil-fuel energy for personal use.
+
+(b.1) Eco-Sphere Destruction Exclusion: Entities whose primary business (≥50% consolidated revenue) is derived from large-scale ecosystem destruction, including but not limited to deforestation of primary forests, large-scale ocean habitat destruction, or systematic biodiversity eradication. This exclusion does not apply to subsistence-level activities by vulnerable or Indigenous communities.
+
+(c) War Crimes: Entities that, within the past five (5) years, have been formally charged or found guilty of war crimes by an internationally recognized court or tribunal.
+
+OHCHR trigger: Entities that, within the past five (5) years, have been publicly accused of war crimes by the Office of the UN High Commissioner for Human Rights (OHCHR) via public statements or reports.
+
+(d) Gender Discrimination: Entities that, within the past five (5) years, have been formally charged or found guilty by an internationally recognized court or tribunal of systemic discrimination against women.
+
+OHCHR trigger: Entities that, within the past five (5) years, have been publicly accused by OHCHR of systemic discrimination against women via public statements or reports.
+
+(e) Human-Rights Violators: Entities that, within the past five (5) years, have been formally charged or found guilty by an internationally recognized court or tribunal of systemic human-rights violations.
+
+OHCHR trigger: Entities that, within the past five (5) years, have been publicly accused by OHCHR of systemic human-rights violations via public statements or reports.
+
+4.3 Safe-Harbor Exceptions:
+
+Research, journalism, archiving, documentation, accountability, whistleblowing, interoperability, or other harm-reduction efforts reasonably aimed at preventing, exposing, or mitigating the harms in §4 remain permitted for otherwise non-Prohibited Entities.
+
+---
+
+5. DUE DILIGENCE, DOWNSTREAM, AND VERIFICATION
+
+Licensees must take reasonable, good-faith steps to avoid knowingly providing the Work to Prohibited Entities or for Prohibited Uses. Redistribution must include this License in full, and no sublicense or contract may circumvent §4. If a Licensee learns of a downstream violation, it must cease further provision and, where practicable, notify the Contributor(s). Contributors may request reasonable documentation of such diligence.
+
+---
+
+6. TERMINATION, CURE, REVOCATION & PATENT RETALIATION
+
+6.1 Automatic Termination: This License terminates automatically for any Entity that:
+
+(i) is or becomes a Prohibited Entity; or
+
+(ii) engages in a Prohibited Use; or
+
+(iii) violates §3 or §5 and fails to cure within 30 days after becoming aware; or
+
+(iv) asserts or threatens a patent claim in litigation (including counterclaims/cross-claims) alleging that the Work or a Contribution infringes a patent (“Patent Assertion”).
+
+6.2 Discretionary Revocation: In addition to §6.1, any Contributor may revoke this License with respect to a violating Entity upon written notice based on credible evidence of a §4 violation. Revocation supplements, and does not replace, automatic termination.
+
+6.3 Reinstatement: For §6.1(iii), the license reinstates automatically upon cure within 30 days. For §6.1(iv), reinstatement requires written consent from all affected Contributors.
+
+6.4 Reservation of Rights: Termination or revocation does not limit any other rights or remedies, including injunctive relief and damages.
+
+---
+
+7. TRADEMARKS
+
+No trademark rights are granted, except as necessary for descriptive use.
+
+---
+
+8. WARRANTY DISCLAIMER
+
+THE WORK IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
+
+---
+
+9. LIMITATION OF LIABILITY
+
+IN NO EVENT SHALL ANY CONTRIBUTOR BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE WORK OR ITS USE.
+
+---
+
+10. SEVERABILITY; NON-WAIVER; ANTI-AVOIDANCE
+
+If any provision is unenforceable in a jurisdiction, it shall be modified only as needed to become enforceable while preserving intent; the remainder stays effective. Failure to enforce is not a waiver. Any attempt to relicense, proxy, or structure transactions to evade §4 is void.
+
+---
+
+11. INTERPRETATION
+
+“Reasonable, good-faith steps” in §5 means diligence proportional to the scale and risk of distribution (e.g., sanctions/ownership checks, supplier codes, contractual pass-through). Ambiguities are to be resolved to effectuate the Purpose.
