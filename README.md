@@ -12,13 +12,41 @@ A visual, no-code environment for creating interactive 2D layouts with drag-and-
 
 ## Quick Start
 
-Simply open `index.html` in a modern web browser (Chrome, Firefox, Safari, Edge).
+⚠️ **Important**: This application uses ES Modules and **requires a local web server**. You cannot open `index.html` directly (double-click) due to CORS restrictions.
+
+### Run with Python (Recommended)
 
 ```bash
-# Using a simple HTTP server (recommended)
+# Navigate to the project folder
+cd /path/to/InterfaceGenerator
+
+# Start a local server
 python3 -m http.server 8000
-# Then open http://localhost:8000
+
+# Open in browser: http://localhost:8000
 ```
+
+### Alternative: Using npm
+
+```bash
+npm start
+# Opens http://localhost:8000
+```
+
+### Alternative: Other Servers
+
+```bash
+# Using Node.js http-server
+npx http-server -p 8000
+
+# Using PHP
+php -S localhost:8000
+
+# Using Ruby
+ruby -run -ehttpd . -p8000
+```
+
+**Browser Support**: Chrome, Firefox, Safari, Edge (modern versions)
 
 ## Project Structure
 
