@@ -1,0 +1,156 @@
+/* Custom styles for the app */
+body {
+    font-family: 'Inter', sans-serif;
+    overscroll-behavior: none;
+}
+
+.canvas-object {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    background-color: #60a5fa; /* blue-400 */
+    border: 2px solid #2563eb; /* blue-600 */
+    border-radius: 0.5rem;
+    cursor: move;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    user-select: none;
+    box-sizing: border-box;
+}
+
+.canvas-object.selected {
+    outline: 3px solid #3b82f6; /* blue-500 */
+    outline-offset: 2px;
+}
+
+.canvas-object.anchored {
+    cursor: not-allowed;
+    background-color: #9ca3af; /* gray-400 */
+    border: 2px solid #4b5563; /* gray-600 */
+}
+
+.legend-item {
+    cursor: grab;
+    width: 80px;
+    height: 80px;
+    background-color: #60a5fa;
+    border: 2px solid #2563eb;
+    border-radius: 0.5rem;
+}
+
+#contextMenu {
+    position: absolute;
+    z-index: 1000;
+    display: none;
+    background-color: white;
+    border: 1px solid #d1d5db; /* gray-300 */
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    padding: 0.25rem;
+    min-width: 200px;
+}
+
+#contextMenu button {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+    border-radius: 0.25rem;
+}
+
+#contextMenu button:hover {
+    background-color: #f3f4f6; /* gray-100 */
+}
+
+#contextMenu .check-icon {
+    width: 24px;
+    visibility: hidden;
+    color: #2563eb;
+    font-weight: bold;
+}
+
+#contextMenu .check-icon.visible {
+    visibility: visible;
+}
+
+#contextMenu .menu-label {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #6b7280; /* gray-500 */
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* History Modal Styles */
+#history-grid-container {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: #f3f4f6;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+}
+
+.history-branch-column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.history-branch-column .branch-label {
+    font-family: monospace;
+    font-size: 0.75rem;
+    color: #4b5563;
+}
+
+.history-node {
+    width: 100px;
+    padding: 0.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.25rem;
+    background-color: #fff;
+    text-align: center;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.history-node:hover {
+    border-color: #3b82f6;
+    transform: translateY(-2px);
+}
+
+.history-node.active {
+    background-color: #3b82f6;
+    color: white;
+    font-weight: bold;
+    border-color: #1d4ed8;
+}
+
+.history-node.placeholder {
+    visibility: hidden;
+    cursor: default;
+}
+
+/* Selection Box Style */
+#selection-box {
+    position: absolute;
+    border: 1px dashed #3b82f6;
+    background-color: rgba(59, 130, 246, 0.2);
+    z-index: 2000;
+    pointer-events: none;
+}

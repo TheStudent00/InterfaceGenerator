@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag and Drop Canvas Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-100 h-screen overflow-hidden flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-white shadow-md p-4 z-10 flex justify-between items-center">
+        <h1 class="text-xl font-bold text-gray-800">HTML Canvas Builder</h1>
+        <div class="flex items-center space-x-2">
+            <button id="undoBtn" title="Undo" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg transition-colors">Undo</button>
+            <button id="redoBtn" title="Redo" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg transition-colors">Redo</button>
+            <button id="globalDeleteBtn" title="Delete Selected" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition-colors" disabled>Delete Selected</button>
+            <button id="historyBtn" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">History</button>
+            <button id="saveBtn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">Save & Collapse</button>
+            <button id="loadBtn" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">Load</button>
+            <input type="file" id="loadFile" class="hidden" accept=".json">
+            <button id="exportBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">Export</button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex overflow-hidden">
+        <!-- Left Panel: Legend -->
+        <aside class="w-1/5 bg-white p-6 border-r border-gray-200 overflow-y-auto">
+            <h2 class="text-lg font-semibold mb-4 text-gray-700">Objects</h2>
+            <div class="space-y-4">
+                <div id="square-legend" class="legend-item" draggable="true" title="Draggable Square"></div>
+            </div>
+        </aside>
+
+        <!-- Right Panel: Canvas -->
+        <div id="canvas-container" class="w-4/5 bg-gray-50 flex-grow relative p-4">
+             <div id="canvas" class="w-full h-full bg-white shadow-inner rounded-lg border border-gray-300 relative overflow-hidden">
+                <!-- Dropped objects will be appended here -->
+             </div>
+        </div>
+    </main>
+
+    <!-- Context Menu -->
+    <div id="contextMenu">
+        <div>
+            <p class="menu-label">Horizontal Mode</p>
+            <button data-mode="h" data-value="relative"><span class="check-icon">✓</span>Relative</button>
+            <button data-mode="h" data-value="absolute"><span class="check-icon">✓</span>Absolute</button>
+        </div>
+        <hr class="my-1 border-gray-200">
+        <div>
+            <p class="menu-label">Vertical Mode</p>
+            <button data-mode="v" data-value="relative"><span class="check-icon">✓</span>Relative</button>
+            <button data-mode="v" data-value="absolute"><span class="check-icon">✓</span>Absolute</button>
+        </div>
+        <hr class="my-1 border-gray-200">
+        <button id="toggleAnchor"><span class="check-icon">✓</span><span id="anchor-text">Anchor Object</span></button>
+        <hr class="my-1 border-gray-200">
+        <button id="deleteBtn" class="text-red-600 hover:bg-red-50 w-full flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+            Delete
+        </button>
+    </div>
+
+    <!-- History Modal -->
+    <div id="historyModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-4xl">
+            <div class="flex justify-between items-center mb-4">
+                 <h2 class="text-xl font-bold">Change History</h2>
+                 <button id="closeHistoryBtn" class="text-gray-500 hover:text-gray-800 text-2xl font-bold">&times;</button>
+            </div>
+            <p class="text-sm text-gray-600 mb-4">Time flows vertically (top to bottom). New branches appear horizontally (left to right).</p>
+            <div id="history-grid-container">
+                <!-- History grid will be rendered here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
