@@ -4,9 +4,9 @@ A visual, no-code environment for creating interactive 2D layouts with drag-and-
 
 ## Current Status
 
-**Version**: v73.0 (De-blobbed Architecture)
+**Version**: v73.0 (ES Module Architecture)
 **Stability**: Stable
-**Migration Status**: Step 1 Complete (Multi-file structure)
+**Migration Status**: Step 2 Complete (ES Modules with MVC pattern)
 
 ## Quick Start
 
@@ -22,11 +22,17 @@ python3 -m http.server 8000
 
 ```
 InterfaceGenerator/
-├── index.html              # Main HTML structure
-├── style.css              # All application styles
-├── app.js                 # Complete application logic
-├── visual-app-builder.html  # Original single-file version (v73.0 backup)
-└── README.md              # This file
+├── index.html                 # Main HTML structure
+├── style.css                  # All application styles
+├── src/                       # ES Module source files
+│   ├── main.js               # Application entry point
+│   ├── AppState.js           # State management controller (Model)
+│   ├── UIManager.js          # View and interaction handler (View)
+│   ├── HistoryManager.js     # 2D branching history system (Service)
+│   └── Instance.js           # Data model for canvas objects (Model)
+├── app.js                     # Legacy: Pre-ES Module version
+├── visual-app-builder.html   # Legacy: Original single-file version
+└── README.md                  # This file
 ```
 
 ## Features
@@ -49,30 +55,27 @@ InterfaceGenerator/
 
 ## Development Roadmap
 
-### ✅ Completed: Migration Step 1
+### ✅ Completed: Migration Step 1 (De-blob)
 - [x] De-blobbed from single-file to multi-file architecture
 - [x] Separated HTML, CSS, and JavaScript
 - [x] Improved debugging experience (correct line numbers)
 - [x] Better syntax highlighting and editing
 
-### 🚧 Next: Migration Step 2 (ES Modules)
-Convert to modern ES module architecture:
+### ✅ Completed: Migration Step 2 (ES Modules)
+- [x] Converted to ES Module architecture with `type="module"`
+- [x] Created modular class-based structure (MVC pattern)
+- [x] **Instance.js**: Pure data model for canvas objects
+- [x] **AppState.js**: Single source of truth, state management controller
+- [x] **HistoryManager.js**: Isolated 2D branching history service
+- [x] **UIManager.js**: View layer handling all DOM and user interactions
+- [x] **main.js**: Application initialization and bootstrap
 
-**Create module files:**
-```
-src/
-├── Instance.js         # Data model class
-├── AppState.js        # State management controller
-├── HistoryManager.js  # History system
-├── UIManager.js       # View/DOM management
-└── main.js           # Application entry point
-```
-
-**Benefits:**
-- Clean separation of concerns
-- Explicit dependencies
-- Better code organization
-- Easier testing and maintenance
+**Benefits Achieved:**
+- ✅ Clean separation of concerns (MVC pattern)
+- ✅ Explicit module dependencies
+- ✅ Better code organization and maintainability
+- ✅ Easier testing (isolated components)
+- ✅ Scalable architecture for future features
 
 ### 🔮 Future: Migration Step 3 (Build System)
 Set up Vite for modern development workflow:
@@ -103,24 +106,44 @@ Once the scene graph is complete, build towards a PBD (Programming by Demonstrat
 
 ## Architecture
 
-### Current (v73.0 - De-blobbed)
-- **Instance**: Data-only model for canvas objects
-- **HistoryManager**: 2D branching history system with state capture/restore
-- **Event Handlers**: Direct DOM manipulation and state updates
-- **Unidirectional Flow**: User Interaction → State Change → History → Re-render
+### Current (v73.0 - ES Modules MVC)
 
-### Data Flow
+The application follows a clean Model-View-Controller (MVC) pattern with ES Modules:
+
+**Model:**
+- **Instance.js**: Pure data class representing canvas objects with positioning, hierarchy, and state
+- **AppState.js**: Single source of truth managing the collection of instances and selection state
+
+**View:**
+- **UIManager.js**: Handles all DOM manipulation, rendering, and user event processing
+
+**Service:**
+- **HistoryManager.js**: Isolated 2D branching history system with state capture/restore
+
+**Controller:**
+- **main.js**: Application bootstrap and initialization
+
+### Data Flow (Unidirectional)
 ```
 User Action (mousedown/mousemove/mouseup)
     ↓
-Event Handler (UIManager)
+UIManager.handleEvent()
     ↓
-State Update (mutate DOM)
+AppState.methodCall() (e.g., updateInstancePosition)
     ↓
-History.addState('Action Name')
+AppState.saveToHistory('Action Name')
     ↓
-Re-render UI
+AppState.notifyChange() → UIManager.renderCanvas()
+    ↓
+UIManager renders instances from AppState
 ```
+
+### Key Architectural Principles
+1. **Single Source of Truth**: AppState holds all application data
+2. **Unidirectional Data Flow**: State changes flow down, events flow up
+3. **Separation of Concerns**: Clear boundaries between Model, View, and Services
+4. **Observer Pattern**: AppState notifies listeners (UIManager) of changes
+5. **Immutable History**: HistoryManager captures deep clones of state
 
 ## Known Issues & Notes
 
@@ -157,9 +180,12 @@ See COPYING.txt for license information.
 
 ## Version History
 
-- **v73.0** - Scene graph data model refactor (Step 1) + De-blobbed architecture
+- **v73.0** - Scene graph data model refactor + Multi-file architecture + ES Modules
+  - Scene graph data model (Step 1 of scene graph)
+  - De-blobbed to multi-file structure (Migration Step 1)
+  - ES Module architecture with MVC pattern (Migration Step 2)
 - Previous versions used single-file blob loading via VirtualAssetLoader
 
 ---
 
-**Next Step**: Convert to ES Modules architecture for better code organization.
+**Next Step**: Set up Vite build system (Migration Step 3) or implement scene graph refactor (localTransform/worldTransform).
