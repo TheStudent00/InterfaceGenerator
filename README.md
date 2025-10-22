@@ -4,9 +4,11 @@ A visual, no-code environment for creating interactive 2D layouts with drag-and-
 
 ## Current Status
 
-**Version**: v73.0 (ES Module Architecture)
+**Version**: v73.0 (Scene Graph Architecture)
 **Stability**: Stable
-**Migration Status**: Step 2 Complete (ES Modules with MVC pattern)
+**Architecture Status**:
+- ✅ ES Modules with MVC pattern (Migration Step 2)
+- ✅ Scene Graph with localTransform/worldTransform (Complete!)
 
 ## Quick Start
 
@@ -84,21 +86,36 @@ Set up Vite for modern development workflow:
 - npm package management
 - Minification and optimization
 
-### 🎯 Strategic Goal: Scene Graph Refactor
-Current v73.0 is Step 1 of 2 for the scene graph architecture:
+### ✅ Completed: Scene Graph Refactor
+The scene graph architecture is now fully implemented!
 
-**Completed:**
-- ✅ Migrated data model to `parentId` / `children[]` hierarchy
+**What Changed:**
+- ✅ **localTransform**: Instances now store position relative to their parent (not canvas)
+- ✅ **worldTransform**: Computed absolute position on canvas (cached for performance)
+- ✅ **updateWorldTransforms()**: Recursive scene graph traversal from roots to leaves
+- ✅ **updateInstancePosition()**: Converts world coordinates to local space automatically
+- ✅ **renderInstance()**: Uses worldTransform for rendering
+- ✅ **setParent()**: Preserves world position when changing parent relationships
+- ✅ **Backward compatibility**: Can load old saves from pre-scene-graph versions
 
-**Next (Critical):**
-- [ ] Implement `localTransform` (parent-relative coordinates)
-- [ ] Add `worldTransform` computation (recursive canvas position)
-- [ ] Create `updateWorldTransforms()` traversal function
-- [ ] Refactor `updateInstancePosition()` to use local coordinates
-- [ ] Update `renderInstance()` to use world transforms
+**How It Works:**
+```
+Root Object (no parent)
+  localTransform: (100, 50)
+  worldTransform: (100, 50)  ← local = world for roots
+  └─ Child Object
+      localTransform: (20, 30)  ← relative to parent
+      worldTransform: (120, 80)  ← computed: parent.world + local
+```
+
+**Key Benefits:**
+- 🎯 **True hierarchical transforms**: Children automatically follow parents
+- 🚀 **No delta calculations**: Position updates are clean and predictable
+- 🔧 **Foundation for PBD**: Scene graph enables relationship-based programming
+- ✨ **Intuitive parenting**: Objects maintain visual position when changing parents
 
 ### 🌟 Long-Term Vision: Programming by Demonstration
-Once the scene graph is complete, build towards a PBD (Programming by Demonstration) system:
+With the scene graph complete, the foundation is set for PBD features:
 
 1. **Action Logger**: Record user actions with abstract predicates
 2. **Generalization Engine**: Infer rules from demonstrated patterns
@@ -147,9 +164,9 @@ UIManager renders instances from AppState
 
 ## Known Issues & Notes
 
-- The current positioning system is still **delta-based** (canvas-relative)
-- Parent-child relationships exist in data but use delta movement, not true hierarchy
-- Scene graph refactor (Step 2) required before advanced features
+- **Scene Graph is Live**: Parent-child relationships now use true hierarchical transforms
+- Backward compatibility maintained: can load saves from pre-scene-graph versions
+- Ready for advanced features like spatial queries and PBD macro recording
 
 ## Migration Benefits
 
@@ -180,12 +197,15 @@ See COPYING.txt for license information.
 
 ## Version History
 
-- **v73.0** - Scene graph data model refactor + Multi-file architecture + ES Modules
-  - Scene graph data model (Step 1 of scene graph)
-  - De-blobbed to multi-file structure (Migration Step 1)
-  - ES Module architecture with MVC pattern (Migration Step 2)
+- **v73.0** - Complete architecture modernization
+  - Migration Step 1: De-blobbed to multi-file structure
+  - Migration Step 2: ES Module architecture with MVC pattern
+  - **Scene Graph**: Full localTransform/worldTransform implementation
+    - True hierarchical parent-child relationships
+    - Automatic world transform computation
+    - Parent-relative local coordinates
 - Previous versions used single-file blob loading via VirtualAssetLoader
 
 ---
 
-**Next Step**: Set up Vite build system (Migration Step 3) or implement scene graph refactor (localTransform/worldTransform).
+**Next Step**: Set up Vite build system (Migration Step 3) or begin PBD action logger.

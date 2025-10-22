@@ -78,8 +78,43 @@ export class AppState {
         this.instances = state.instances.map(data => Instance.fromJSON(data));
         this.selectedIds = new Set(state.selectedIds);
         this.objectCounter = state.objectCounter;
+        this.updateWorldTransforms(); // Recompute world transforms after restore
         this.notifyChange();
         this.notifySelectionChange();
+    }
+
+    /**
+     * Update world transforms for all instances
+     * Traverses the scene graph from roots to leaves
+     * This is called after any change that affects positions
+     */
+    updateWorldTransforms() {
+        // Build a set of instances that have parents (non-roots)
+        const nonRoots = new Set(
+            this.instances
+                .filter(inst => inst.parentId !== null)
+                .map(inst => inst.id)
+        );
+
+        // Find all root instances (no parent)
+        const roots = this.instances.filter(inst => inst.parentId === null);
+
+        // Recursively update transforms starting from roots
+        const updateRecursive = (instance, parentWorldTransform = null) => {
+            // Compute this instance's world transform
+            instance.computeWorldTransform(parentWorldTransform);
+
+            // Update all children
+            instance.children.forEach(childId => {
+                const child = this.getInstance(childId);
+                if (child) {
+                    updateRecursive(child, instance.worldTransform);
+                }
+            });
+        };
+
+        // Process all roots
+        roots.forEach(root => updateRecursive(root, null));
     }
 
     /**
@@ -95,10 +130,13 @@ export class AppState {
      */
     createInstance(x, y, type = 'square') {
         const instance = new Instance(`obj-${++this.objectCounter}`, type);
-        instance.positioning.x = x;
-        instance.positioning.y = y;
+        instance.localTransform.x = x;
+        instance.localTransform.y = y;
         instance.label = instance.id;
         this.instances.push(instance);
+
+        // Compute world transform (it's a root, so world = local)
+        instance.computeWorldTransform(null);
 
         // Select only the new instance
         this.selectedIds.clear();
@@ -173,6 +211,7 @@ export class AppState {
 
     /**
      * Set the parent of an instance
+     * Scene Graph: Converts between world and local coordinates when parent changes
      */
     setParent(childId, parentId) {
         const child = this.getInstance(childId);
@@ -180,6 +219,10 @@ export class AppState {
 
         if (!child) return false;
         if (parentId && !parent) return false;
+
+        // Store current world position
+        const currentWorldX = child.worldTransform.x;
+        const currentWorldY = child.worldTransform.y;
 
         // Remove from old parent's children
         if (child.parentId) {
@@ -197,51 +240,71 @@ export class AppState {
             if (!parent.children.includes(childId)) {
                 parent.children.push(childId);
             }
+
+            // Convert world position to local position relative to new parent
+            child.localTransform.x = currentWorldX - parent.worldTransform.x;
+            child.localTransform.y = currentWorldY - parent.worldTransform.y;
+        } else {
+            // Becoming a root: local = world
+            child.localTransform.x = currentWorldX;
+            child.localTransform.y = currentWorldY;
         }
 
+        // Recompute all transforms
+        this.updateWorldTransforms();
         this.notifyChange();
         return true;
     }
 
     /**
-     * Update an instance's position
+     * Update an instance's position (Scene Graph)
+     *
+     * In the scene graph, we only update the localTransform.
+     * Children automatically move because their worldTransform is computed
+     * from their parent's worldTransform + their own localTransform.
+     *
+     * x, y are in WORLD coordinates (canvas-relative pixels)
      */
     updateInstancePosition(id, x, y) {
         const instance = this.getInstance(id);
         if (!instance || instance.anchored) return false;
 
-        const oldX = instance.positioning.x;
-        const oldY = instance.positioning.y;
-        const deltaX = x - oldX;
-        const deltaY = y - oldY;
-
-        instance.positioning.x = x;
-        instance.positioning.y = y;
-
-        // Move children by the same delta (current delta-based behavior)
-        // NOTE: This will be replaced in the scene graph refactor
-        this.getChildren(id).forEach(child => {
-            if (!child.anchored) {
-                child.positioning.x += deltaX;
-                child.positioning.y += deltaY;
+        // Convert world coordinates to local coordinates
+        if (instance.parentId) {
+            const parent = this.getInstance(instance.parentId);
+            if (parent) {
+                // Local = World - Parent.World
+                instance.localTransform.x = x - parent.worldTransform.x;
+                instance.localTransform.y = y - parent.worldTransform.y;
+            } else {
+                // Parent not found, treat as root
+                instance.localTransform.x = x;
+                instance.localTransform.y = y;
             }
-        });
+        } else {
+            // Root instance: local = world
+            instance.localTransform.x = x;
+            instance.localTransform.y = y;
+        }
+
+        // Recompute world transforms (this updates the instance and all its children)
+        this.updateWorldTransforms();
 
         this.notifyChange();
         return true;
     }
 
     /**
-     * Update an instance's positioning mode
+     * Update an instance's render mode (how position is displayed in CSS)
      */
     updateInstanceMode(id, axis, mode) {
         const instance = this.getInstance(id);
         if (!instance) return false;
 
         if (axis === 'h') {
-            instance.positioning.modeH = mode;
+            instance.renderMode.horizontal = mode;
         } else if (axis === 'v') {
-            instance.positioning.modeV = mode;
+            instance.renderMode.vertical = mode;
         }
 
         this.notifyChange();

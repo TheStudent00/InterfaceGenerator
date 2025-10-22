@@ -1,3 +1,5 @@
+import { Instance } from './Instance.js';
+
 /**
  * UIManager - View and User Interaction Handler
  *
@@ -382,7 +384,8 @@ export class UIManager {
     }
 
     /**
-     * Render a single instance on the canvas
+     * Render a single instance on the canvas (Scene Graph)
+     * Uses worldTransform for positioning
      */
     renderInstance(instance) {
         const obj = document.createElement('div');
@@ -391,17 +394,20 @@ export class UIManager {
         obj.dataset.instanceId = instance.id;
         obj.textContent = instance.label;
 
-        // Apply positioning
+        // Apply positioning using worldTransform
         const canvasRect = this.canvas.getBoundingClientRect();
-        const { x, y, modeH, modeV } = instance.positioning;
+        const { x, y } = instance.worldTransform;
+        const { horizontal, vertical } = instance.renderMode;
 
-        if (modeH === 'relative') {
+        // Apply horizontal positioning
+        if (horizontal === 'relative') {
             obj.style.left = `${(x / canvasRect.width) * 100}%`;
         } else {
             obj.style.left = `${x}px`;
         }
 
-        if (modeV === 'relative') {
+        // Apply vertical positioning
+        if (vertical === 'relative') {
             obj.style.top = `${(y / canvasRect.height) * 100}%`;
         } else {
             obj.style.top = `${y}px`;
@@ -534,24 +540,47 @@ export class UIManager {
 
     /**
      * Handle export button (generate standalone HTML)
+     * Uses worldTransform for absolute positioning in the exported file
      */
     handleExport() {
+        // Get current state and reconstruct instances to compute world transforms
         const currentState = this.state.history.getCurrentState().state;
         let objectsHTML = '';
         let interactiveObjectsData = [];
 
-        currentState.instances.forEach(instData => {
-            const isAnchored = instData.anchored;
-            const { x, y, modeH, modeV } = instData.positioning;
+        // We need to compute world transforms for the export
+        // since the exported HTML won't have the parent-child hierarchy
+        const instances = currentState.instances.map(data => Instance.fromJSON(data));
+
+        // Build instance map for quick lookup
+        const instanceMap = new Map(instances.map(inst => [inst.id, inst]));
+
+        // Compute world transforms
+        const computeTransforms = (instance) => {
+            const parent = instance.parentId ? instanceMap.get(instance.parentId) : null;
+            instance.computeWorldTransform(parent ? parent.worldTransform : null);
+            instance.children.forEach(childId => {
+                const child = instanceMap.get(childId);
+                if (child) computeTransforms(child);
+            });
+        };
+
+        instances.filter(inst => !inst.parentId).forEach(root => computeTransforms(root));
+
+        // Generate HTML for each instance
+        instances.forEach(instance => {
+            const isAnchored = instance.anchored;
+            const { x, y } = instance.worldTransform;
+            const { horizontal, vertical } = instance.renderMode;
             const canvasRect = this.canvas.getBoundingClientRect();
 
-            let leftStyle = modeH === 'relative' ? `${(x / canvasRect.width) * 100}%` : `${x}px`;
-            let topStyle = modeV === 'relative' ? `${(y / canvasRect.height) * 100}%` : `${y}px`;
+            let leftStyle = horizontal === 'relative' ? `${(x / canvasRect.width) * 100}%` : `${x}px`;
+            let topStyle = vertical === 'relative' ? `${(y / canvasRect.height) * 100}%` : `${y}px`;
 
-            objectsHTML += `<div class="canvas-object" id="${instData.id}" style="left: ${leftStyle}; top: ${topStyle};">${instData.label}</div>\n`;
+            objectsHTML += `<div class="canvas-object" id="${instance.id}" style="left: ${leftStyle}; top: ${topStyle};">${instance.label}</div>\n`;
 
             if (!isAnchored) {
-                interactiveObjectsData.push({ id: instData.id });
+                interactiveObjectsData.push({ id: instance.id });
             }
         });
 
